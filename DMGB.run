@@ -1,0 +1,23 @@
+# =========================
+# DMGB.run   (AMPL run script)
+# =========================
+
+reset;
+model DMGB.mod;
+data  DMGB.dat;
+
+# option solver cplex;
+
+solve;
+
+printf "\n--- Commitment u(i,t) ---\n";
+display u;
+
+printf "\n--- Dispatch P(i,t,s) ---\n";
+display P;
+
+# Optional: export results to a CSV-like text for postprocessing bids
+printf "\n--- Export (i,t,s,lambda,P) ---\n";
+for {i in G, t in T, s in S} {
+  printf "%s,%d,%s,%.2f,%.6f\n", i, t, s, lambda[t,s], P[i,t,s];
+}
